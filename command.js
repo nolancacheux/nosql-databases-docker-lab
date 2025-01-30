@@ -104,3 +104,8 @@ db.restaurant.find({ "grades.grade": { $not: { $eq: "C" } } }).forEach(function 
     }
     db.restaurant.updateMany({ _id: restaurant._id }, { $set: { mark: total } });
 });
+
+
+// TP1 
+
+mongosh "mongodb+srv://cluster0.grkl2.mongodb.net/" --apiVersion 1 --username cachnolan
