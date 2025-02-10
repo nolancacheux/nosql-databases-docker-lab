@@ -252,6 +252,23 @@ sh.splitAt("testDB.test", { _id: ObjectId("5f1a6b3b1c4ae35b2e0b8c6a") })
 
 Remplacez `ObjectId("...")` par un `_id` existant dans votre base de données.
 
+Tout d'abord, on compte le nombre total de documents dans la collection :
+
+```javascript
+db.test.count()
+```
+
+Si, par exemple, on obtient 25 357 documents, alors la moitié serait environ 12 678.
+
+```javascript
+db.test.find({}, { _id: 1 }).sort({ _id: 1 }).skip(12678).limit(1).pretty()
+```
+
+- `sort({ _id: 1 })` trie les documents par `_id` croissant.
+- `skip(12678)` ignore les 12 678 premiers documents pour arriver vers le milieu.
+- `limit(1)` récupère un seul document.
+- `{ _id: 1 }` permet de n'afficher que le champ `_id`.
+
 Déplacer un chunk vers un autre shard :
 
 ```javascript
@@ -265,4 +282,3 @@ Vérifier la nouvelle répartition des chunks :
 ```javascript
 db.test.getShardDistribution()
 ```
-
