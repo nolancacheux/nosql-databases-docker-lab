@@ -34,7 +34,7 @@ services:
     - This command connects to the MongoDB instance using the MongoDB Shell.
 
 3. **Import data into MongoDB:**
-    - `mongoimport --db Exercice --collection restaurant --file "C:\Users\nolan\Desktop\non_relationnal_database_docker_mongodb\restaurants.json"`
+    - `mongoimport --db Exercice --collection restaurant --file "C:\Users\nolan\Desktop\non_relationnal_database_docker_mongodb\filter_mongodb\restaurants.json"`
     - This command imports data from the specified JSON file into the 'restaurant' collection of the 'Exercice' database.
 
 4. **Show all databases:**

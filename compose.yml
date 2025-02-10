@@ -1,15 +1,41 @@
+version: '3.8'
+
 services:
-  mongo:
+  configsvr:
     image: mongo
+    command: ["mongod", "--configsvr", "--replSet", "configReplSet", "--port", "27019", "--bind_ip_all"]
+    ports:
+      - 27019:27019
+    volumes:
+      - configdb:/data/db
+
+  shard1:
+    image: mongo
+    command: ["mongod", "--shardsvr", "--replSet", "sh1", "--port", "27031", "--bind_ip_all"]
+    ports:
+      - 27031:27031
+    volumes:
+      - shard1:/data/db
+
+  shard2:
+    image: mongo
+    command: ["mongod", "--shardsvr", "--replSet", "sh2", "--port", "27032", "--bind_ip_all"]
+    ports:
+      - 27032:27032
+    volumes:
+      - shard2:/data/db
+
+  mongos:
+    image: mongo
+    command: ["mongos", "--configdb", "configReplSet/configsvr:27019", "--port", "27017", "--bind_ip_all"]
+    depends_on:
+      - configsvr
+      - shard1
+      - shard2
     ports:
       - 27017:27017
-    volumes:
-      - ./data:/data/db
 
-  mongo-express:
-    image: mongo-express
-    ports:
-      - 8081:8081
-    environment:
-      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
-      ME_CONFIG_BASICAUTH: false
+volumes:
+  configdb:
+  shard1:
+  shard2:
