@@ -1,5 +1,11 @@
 # Configuration de MongoDB avec ReplicaSet et Sharding
 
+ReplicaSet : réplication des données sur plusieurs instances pour garantir la disponibilité et la tolérance aux pannes.
+Primary : Instance principale qui accepte les écritures.
+Secondary : Instance(s) de sauvegarde qui répliquent les données de la Primary.
+
+Sharding : Division des données en chunks pour répartir la charge sur plusieurs shards/machine : scalabilité horizontale.
+
 ## 1️⃣ Introduction : Notions Fondamentales en NoSQL
 
 ### CAP Theorem

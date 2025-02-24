@@ -1,0 +1,136 @@
+MapReduce : is a paradigm that allows to process large data sets with a parallel, distributed algorithm on a cluster.
+MapReduce is a programming model
+1) divide the initial problem into smaller sub-problems
+2) rule : solve each sub-problem in parallel independently
+3) combine the results of the sub-problems to get the final result
+
+Hadoop is an open-source implementation of the MapReduce programming model.
+Hadoop is a framework that allows to store and process large data sets in a distributed environment.
+Hadoop is composed of two main components:
+1) HDFS (Hadoop Distributed File System) : a distributed file system that stores data on the cluster
+2) MapReduce : a parallel, distributed algorithm that processes the data stored in HDFS
+
+Chunks : 64MB for each chunk of data
+
+MapReduce is divide and conquer algorithm
+
+sharding : dividing the data into smaller chunks
+
+2 steps in MapReduce
+
+1) Map step : apply a function to each element of the input data set and produce a set of intermediate key-value pairs
+2) Reduce step : apply a function to each key and its associated values to produce the final result
+
+Exemple : WordCount , it's a simple example of MapReduce algorithm
+1) Map step : read a text file and produce a set of key-value pairs where the key is a word and the value is 1,  a function in python for example
+2) Reduce step : sum the values of each key to get the count of each word in the text file
+
+wordcount example :
+
+    input : "hello world hello"
+
+    Map step :
+    (hello, 1)
+    (world, 1)
+    (hello, 1)
+
+    shuffle and sort step : group the key-value pairs by key
+    (hello, [1, 1])
+    (world, [1])
+
+    Reduce step :
+    (hello, 2)
+    (world, 1)
+
+    output : (hello, 2), (world, 1)
+
+Hadoop was created for 3 reasons :
+-optimization of disk and network transfers by limiting the need to move data locality
+-scalability , adapt power to requirements
+-fault tolerance, if a node fails, the data is still available
+
+Hadoop is composed of two main components :
+1) MapReduce : a parallel, distributed algorithm that processes the data stored in HDFS -> Traitement distribué 
+2) HDFS : Hadoop Distributed File System for storing data on the cluster -> Stockage distribué
+
+Hadoop is a framework that allows to store and process large data sets in a distributed environment :
+- what is a distributed storage system ? a system that stores data on multiple nodes in a cluster
+
+
+Distributed storage :
+    NameNode : the master node that manages the metadata of the files stored in HDFS (file names, permissions, data block locations)
+    It's the interface between the client and the DataNodes  
+
+    SecondaryNameNode : the node that creates checkpoints of the metadata stored in the NameNode
+    DataNode : the slave node that stores the data blocks of the files in HDFS
+
+Distributed processing :
+    JobTracker : the master node that manages the execution of MapReduce jobs on the cluster , if it's in GPU or CPU
+    TaskTracker : the slave node that executes the tasks of a MapReduce job
+
+
+HdFS WRITE OPERATION :
+1) the client sends a write request to the NameNode
+2) the NameNode checks if the file already exists and if the client has the permission to write to it
+3) the NameNode sends the list of DataNodes where the data blocks should be written
+4) the client sends the data blocks to the DataNodes
+5) the DataNodes write the data blocks to their local disks
+
+
+DATA PIPELINE :
+    DATA INGESTION :
+        DATA WAREHOUSE OR CENTRAL SOURCE OF DATA
+
+    MESSAGING QUEUE :
+        SPEED LAYER : KAFKA, APACHE SPARK 
+        BATCH LAYER : HADOOP 
+
+    REAL TIME VIEWS , SERVICE LAYER, BATCH VIEWS : CASSANDRA
+
+
+We need to satisfy the CAP theorem :
+    Consistency : all nodes see the same data at the same time
+    Availability : a guarantee that every request receives a response about whether it was successful or failed
+    Partition Tolerance : the system continues to operate despite network partitions
+
+
+SGBR : Système de Gestion de Base de Données Relationnelles
+- SQL , MariaDB, MySQL, PostgreSQL, Oracle, SQL Server
+
+NoSQL : Not Only SQL
+- Cassandra, MongoDB, CouchDB, Redis, HBase
+Cassandra : NoSQL database that provides high availability and scalability
+
+
+Schéma de soumission et éxécution d'un job MapReduce sur un cluster Hadoop :
+    1) JVM Client -> Copie des entrées sur HDFS
+    2) JVM Client -> Soumission du job au JobTracker
+    3) JobTracker -> Initialisation et Création des tâches Map et Reduce
+    4) JobTracker -> Obtention du nombre de splits
+    5) JobTracker -> Heartbeat , which is a signal sent by a TaskTracker to the JobTracker to indicate that it is alive
+    6) TaskTracker -> Lancement des tâches Map et Reduce
+    7) TaskTracker -> Running tasks
+    8) TaskTracker -> Lecture et écriture des données sur HDFS
+
+
+Hadoop2 and Yarn :
+
+    Hadoop2 is the second version of the Hadoop framework that introduced YARN (Yet Another Resource Negotiator)
+    YARN is a resource management layer that allows to run multiple applications on the same Hadoop cluster
+    YARN is composed of two main components :
+    
+    Machine maitre : 
+        1) ResourceManager : the master node that manages the allocation of resources on the cluster
+        2) NodeManager : the slave node that manages the resources (CPU, memory) on a single node
+
+    Machine exclave : 
+        JVM DataNodes has 3 components :
+            -A JVM NodeManager
+            -Container ApplicationMaster
+            -Container YarnChild
+
+    So the difference with before is that the machine maitre will contact every jvm node manager to get the resources
+
+
+Docker is a tool that allows to create, deploy, and run applications in containers
+
