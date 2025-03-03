@@ -10,8 +10,7 @@ We need to create a Hadoop cluster inside Docker with one master node and two wo
 Run the following command to launch the Hadoop master node:
 
 ```bash
-docker run -itd --net=hadoop -p 50070:50070 -p 8088:8088 -p 7077:7077 -p 16010:16010 \
-    --name hadoop-master --hostname hadoop-master liliasfaxi/hadoop-cluster:latest
+docker run -itd --net=hadoop -p 50070:50070 -p 8088:8088 -p 7077:7077 -p 16010:16010 --name hadoop-master --hostname hadoop-master liliasfaxi/hadoop-cluster:latest
 ```
 
 **Options Explained:**
@@ -28,13 +27,13 @@ We need two workers to form a distributed system.
 **Start Worker 1**
 
 ```bash
-docker run -itd -p 8040:8042 --net=hadoop --name hadoop-worker1 --hostname hadoop-slave1 liliasfaxi/hadoop-cluster:latest
+docker run -itd -p 8040:8042 --net=hadoop --name hadoop-worker1 --hostname hadoop-worker1 liliasfaxi/hadoop-cluster:latest
 ```
 
 **Start Worker 2**
 
 ```bash
-docker run -itd -p 8041:8042 --net=hadoop --name hadoop-worker2 --hostname hadoop-slave2 liliasfaxi/hadoop-cluster:latest
+docker run -itd -p 8041:8042 --net=hadoop --name hadoop-worker2 --hostname hadoop-worker2 liliasfaxi/hadoop-cluster:latest
 ```
 
 ## Step 2: Start Hadoop Services
@@ -114,6 +113,15 @@ Expected output:
 -rw-r--r--   1 root supergroup   [size]  [date]  /test/input.txt
 ```
 
+ 
+## Step 3.3: Copy Mapper and Reducer Scripts to Hadoop Master
+
+From your host machine, copy the `mapp.py` and `reducer.py` scripts to the `hadoop-master` container:
+
+```bash
+docker cp mapp.py hadoop-master:/root/mapp.py
+docker cp reducer.py hadoop-master:/root/reducer.py
+```
 ## Step 4: Test the Mapper and Reducer Scripts
 Before running the MapReduce job, test the Python scripts manually.
 
