@@ -100,7 +100,20 @@ Revenir au dossier principal et démarrer Hadoop puis Kafka/Zookeeper :
 cd
 ./start-hadoop.sh
 ./start-kafka-zookeeper.sh
+
+
+# if it doesn't work, try with option
+# jps 
+# kill number of process that are not needed
+#  docker stop hadoop-master
+#  docker start hadoop-master
+#  docker exec -it hadoop-master bash
+#  ./start-hadoop.sh
+#  ./start-kafka-zookeeper.sh
+
+
 ```
+
 
 ### 4. Démarrage de HBase
 
