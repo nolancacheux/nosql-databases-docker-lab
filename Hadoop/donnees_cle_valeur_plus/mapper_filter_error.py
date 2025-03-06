@@ -6,9 +6,10 @@ for line in sys.stdin:
     if not line:
         continue
     parts = line.split()
-    # Assume the severity level is the third token (index 2)
+    # Si le niveau se trouve par exemple en 4ème position, modifiez ici
+    # Pour l'instant, on suppose toujours qu'il est en position 2
     if len(parts) < 3:
         continue
     severity = parts[2]
-    if severity == "ERROR":
+    if severity.upper() == "ERROR":
         print(line)

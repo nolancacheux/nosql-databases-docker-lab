@@ -1,0 +1,127 @@
+# TP2 : Exercices pratiques sur HBase
+
+## Exercice 1 : Table « Projet »
+
+1. Créer la table « Projet » avec les familles de colonnes nécessaires :
+    ```bash
+    create 'Projet', 'Infos', 'Details'
+    ```
+
+2. Ajouter une famille de colonnes « DateFin » :
+    ```bash
+    alter 'Projet', {NAME=>'DateFin'}
+    ```
+
+3. Insérer les données dans la table « Projet » :
+    ```bash
+    # Projet Proj1
+    put 'Projet', 'Proj1', 'Infos:Nom', 'Analyse Big Data'
+    put 'Projet', 'Proj1', 'Infos:Ville', 'Lille'
+    put 'Projet', 'Proj1', 'Details:DateLancement', '2024-01-10'
+    put 'Projet', 'Proj1', 'DateFin:Prevue', '2024-06-15'
+
+    # Projet Proj2
+    put 'Projet', 'Proj2', 'Infos:Nom', 'Développement Web'
+    put 'Projet', 'Proj2', 'Infos:Ville', 'Lyon'
+    put 'Projet', 'Proj2', 'Details:DateLancement', '2023-12-01'
+    put 'Projet', 'Proj2', 'DateFin:Prevue', '2024-05-20'
+
+    # Projet Proj3
+    put 'Projet', 'Proj3', 'Infos:Nom', 'Machine Learning'
+    put 'Projet', 'Proj3', 'Infos:Ville', 'Marseille'
+    put 'Projet', 'Proj3', 'Details:DateLancement', '2024-02-15'
+    put 'Projet', 'Proj3', 'DateFin:Prevue', '2024-08-01'
+    ```
+
+4. Mettre à jour la ville du projet « Proj3 » à Paris :
+    ```bash
+    put 'Projet', 'Proj3', 'Infos:Ville', 'Paris'
+    ```
+
+5. Afficher les données de la table :
+    ```bash
+    scan 'Projet'
+    ```
+
+6. Afficher la date de lancement du projet « Proj2 » :
+    ```bash
+    get 'Projet', 'Proj2', {COLUMN=>'Details:DateLancement'}
+    ```
+
+## Exercice 2 : Table « rainforest »
+
+1. Créer la table « rainforest » avec deux familles : recordings, duration :
+    ```bash
+    create 'rainforest', 'recordings', 'duration'
+    ```
+
+2. Ajouter une famille de colonnes « year » à la table :
+    ```bash
+    alter 'rainforest', {NAME=>'year'}
+    ```
+
+3. Insérer les données dans la table :
+    ```bash
+    # Enregistrement Jude
+    put 'rainforest', '1', 'recordings:Title', 'Jude'
+    put 'rainforest', '1', 'recordings:Artist', 'Courteeners'
+    put 'rainforest', '1', 'recordings:Price', '7.99'
+    put 'rainforest', '1', 'duration:length', '15'
+    put 'rainforest', '1', 'year:release', '2020'
+
+    # Enregistrement Symphony No 5
+    put 'rainforest', '2', 'recordings:Title', 'Symphony No 5'
+    put 'rainforest', '2', 'recordings:Artist', 'Tchaikovsky'
+    put 'rainforest', '2', 'recordings:Price', '8.75'
+    put 'rainforest', '2', 'duration:length', '10'
+    put 'rainforest', '2', 'year:release', '2021'
+
+    # Enregistrement Jazz
+    put 'rainforest', '3', 'recordings:Title', 'Jazz'
+    put 'rainforest', '3', 'recordings:Artist', 'James Brown'
+    put 'rainforest', '3', 'recordings:Price', '6.99'
+    put 'rainforest', '3', 'duration:length', '9'
+    put 'rainforest', '3', 'year:release', '2020'
+    ```
+
+4. Afficher toutes les données de la table :
+    ```bash
+    scan 'rainforest'
+    ```
+
+5. Afficher les enregistrements dont le prix (Price) est 6.99 :
+    ```bash
+    scan 'rainforest', {FILTER => "SingleColumnValueFilter('recordings', 'Price', =, 'binary:6.99')"}
+    ```
+
+6. Afficher les enregistrements de l'année 2020 :
+    ```bash
+    scan 'rainforest', {FILTER => "SingleColumnValueFilter('year', 'release', =, 'binary:2020')"}
+    ```
+
+7. Mettre à jour la durée (Duration) de l’enregistrement « Jazz » à 12 :
+    ```bash
+    put 'rainforest', '3', 'duration:length', '12'
+    ```
+
+8. Afficher les données après mise à jour pour vérifier :
+    ```bash
+    get 'rainforest', '3'
+    ```
+
+9. Afficher toutes les données de la table pour vérification :
+    ```bash
+    scan 'rainforest'
+    ```
+
+## Résumé
+
+| Commande | Utilité |
+| --- | --- |
+| `create 'table','famille1', ...` | Crée une nouvelle table |
+| `put` | Ajoute ou modifie une entrée |
+| `scan` | Affiche toutes les données d'une table |
+| `get` | Affiche une ligne spécifique |
+| `alter` | Ajoute/modifie une famille de colonnes |
+| `disable & drop` | Désactive puis supprime une table |
+| `SingleColumnValueFilter` | Filtre une table selon une valeur de colonne |
